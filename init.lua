@@ -21,6 +21,14 @@ require("lspconfig").clangd.setup({
 	root_dir = require("lspconfig.util").root_pattern("build/compile_commands.json", ".git"),
 })
 
+require('nvim-treesitter.configs').setup({
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false, -- Set to true if you need Vim regex highlighting alongside Treesitter
+  },
+  -- Other Treesitter configurations for specific languages, etc.
+})
+
 local lspconfig = require("lspconfig")
 
 -- Lua language server configuration
