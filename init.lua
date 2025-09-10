@@ -8,11 +8,27 @@ require("telescope").load_extension("mru_files")
 
 require("cscope_maps").setup()
 
+local ls = require("luasnip")
+
+ls.config.set_config({
+	history = true, -- Enables jumping back in snippets
+	enable_autosnippets = true, -- Automatically triggers snippets
+})
+
+vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({"i", "s"}, "<C-E>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, {silent = true})
+
 -- For defaults see: https://neovim.io/doc/user/lsp.html#lsp-defaults
 require("lspconfig").clangd.setup({
 	-- Optional: Add specific settings for clangd
 	-- For example, to enable semantic highlighting:
-	capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
 	cmd = { "clangd" }, -- Ensure clangd is in your PATH or provide the full path
 	filetypes = { "h", "hxx", "hpp", "c", "cpp", "cxx" },
 	init_options = {
@@ -21,12 +37,12 @@ require("lspconfig").clangd.setup({
 	root_dir = require("lspconfig.util").root_pattern("build/compile_commands.json", ".git"),
 })
 
-require('nvim-treesitter.configs').setup({
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false, -- Set to true if you need Vim regex highlighting alongside Treesitter
-  },
-  -- Other Treesitter configurations for specific languages, etc.
+require("nvim-treesitter.configs").setup({
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false, -- Set to true if you need Vim regex highlighting alongside Treesitter
+	},
+	-- Other Treesitter configurations for specific languages, etc.
 })
 
 local lspconfig = require("lspconfig")
@@ -89,6 +105,16 @@ map("n", "<F2>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = 
 map("n", "<F3>", ":Telescope mru_files<CR>", { noremap = true, silent = true, desc = "Toggle MRU" })
 map("n", "<F4>", ":FzfLua files<CR>", { noremap = true, silent = true, desc = "Toggle FzF" })
 map("n", "<F5>", ":Termdebug<CR>", { noremap = true, silent = true, desc = "Opens up GDB" })
+
+vim.opt.omnifunc = "ale#compeltion#OmniFunc"
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
+		vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
+	end,
+})
 
 function CScopeAdd()
 	local cscope_file = vim.fn.getcwd() .. "/" .. "cscope.out"

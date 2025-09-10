@@ -6,7 +6,7 @@ return {
 			vim.g.ale_fix_on_save = 1
 			vim.g.ale_sign_column_always = 1
 			vim.g.ale_linters = {
-				cpp = { "clangtidy", "cpplint", "cspell" },
+				cpp = { "clangtidy", "cpplint", "cspell", "clangd" },
 				c = { "clangtidy", "cpplint" },
 			}
 			vim.g.ale_fixers = {
