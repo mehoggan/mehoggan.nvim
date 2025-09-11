@@ -1,3 +1,5 @@
+vim.cmd("syntax on")
+
 require("config.lazy")
 
 require("hardline").setup({})
@@ -8,56 +10,25 @@ require("telescope").load_extension("mru_files")
 
 require("cscope_maps").setup()
 
-local ls = require("luasnip")
+--require("mason").setup()
 
-ls.config.set_config({
-	history = true, -- Enables jumping back in snippets
-	enable_autosnippets = true, -- Automatically triggers snippets
-})
-
-vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
-vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
-vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
-
-vim.keymap.set({"i", "s"}, "<C-E>", function()
-	if ls.choice_active() then
-		ls.change_choice(1)
-	end
-end, {silent = true})
-
--- For defaults see: https://neovim.io/doc/user/lsp.html#lsp-defaults
 require("lspconfig").clangd.setup({
-	-- Optional: Add specific settings for clangd
-	-- For example, to enable semantic highlighting:
-	cmd = { "clangd" }, -- Ensure clangd is in your PATH or provide the full path
-	filetypes = { "h", "hxx", "hpp", "c", "cpp", "cxx" },
 	init_options = {
-		compilationDatabasePath = "./build", -- Or any other relative/absolute path
+		compilationDatabasePath = "./build", -- or the correct path
 	},
-	root_dir = require("lspconfig.util").root_pattern("build/compile_commands.json", ".git"),
-})
-
-require("nvim-treesitter.configs").setup({
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false, -- Set to true if you need Vim regex highlighting alongside Treesitter
+	cmd = {
+		"clangd",
+		"--background-index",
+		"--suggest-missing-includes",
+		"--compile-commands-dir=./build", -- Replace with your actual path
 	},
-	-- Other Treesitter configurations for specific languages, etc.
+	root_dir = require("lspconfig.util").root_pattern("build", ".git"),
 })
 
-local lspconfig = require("lspconfig")
-
--- Lua language server configuration
-
-vim.diagnostic.config({
-	virtual_text = true,
-	-- other configurations like signs, underline, etc.
-})
-
-lspconfig.lua_ls.setup({
+require("lspconfig").lua_ls.setup({
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
-	root_dir = lspconfig.util.root_pattern(
+	root_dir = require("lspconfig").util.root_pattern(
 		"~/.local/share/nvim/lazy/nvim-lspconfig/.luarc.json",
 		"~/.local/share/nvim/lazy/nvim-lspconfig/.luarc.jsonc",
 		"~/.local/share/nvim/lazy/nvim-lspconfig/.luacheckrc",
@@ -75,6 +46,48 @@ lspconfig.lua_ls.setup({
 			},
 		},
 	},
+})
+
+local ls = require("luasnip")
+
+ls.config.set_config({
+	history = true, -- Enables jumping back in snippets
+	enable_autosnippets = true, -- Automatically triggers snippets
+})
+
+vim.keymap.set({ "i" }, "<C-K>", function()
+	ls.expand()
+end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-L>", function()
+	ls.jump(1)
+end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-J>", function()
+	ls.jump(-1)
+end, { silent = true })
+
+vim.keymap.set({ "i", "s" }, "<C-E>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, { silent = true })
+
+require("nvim-treesitter.configs").setup({
+	modules = {},
+	sync_install = false,
+	ensure_installed = {},
+	ignore_install = {},
+	auto_install = false,
+	highlight = {
+		enable = true,
+		additional_vim_regex_highlighting = false, -- Set to true if you need Vim regex highlighting alongside Treesitter
+	},
+})
+
+-- Lua language server configuration
+
+vim.diagnostic.config({
+	virtual_text = true,
+	-- other configurations like signs, underline, etc.
 })
 
 vim.opt.expandtab = true -- Converts tabs to spaces
