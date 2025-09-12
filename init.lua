@@ -1,17 +1,23 @@
 vim.cmd("syntax on")
 
+vim.g.mapleader = '<Space>'
+
+-- Lazy
 require("config.lazy")
 
+-- Hardline
 require("hardline").setup({})
 
+-- Neogit
 require("neogit").setup({})
 
+-- Telescope
 require("telescope").load_extension("mru_files")
 
+-- Cscope
 require("cscope_maps").setup()
 
---require("mason").setup()
-
+-- LspConfig
 require("lspconfig").clangd.setup({
 	init_options = {
 		compilationDatabasePath = "./build", -- or the correct path
@@ -48,29 +54,39 @@ require("lspconfig").lua_ls.setup({
 	},
 })
 
-local ls = require("luasnip")
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	callback = function(ev)
+		vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
+		vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
+	end,
+})
 
-ls.config.set_config({
+-- Luasnip
+local luasnip = require("luasnip")
+
+luasnip.config.set_config({
 	history = true, -- Enables jumping back in snippets
 	enable_autosnippets = true, -- Automatically triggers snippets
 })
 
 vim.keymap.set({ "i" }, "<C-K>", function()
-	ls.expand()
+	luasnip.expand()
 end, { silent = true })
 vim.keymap.set({ "i", "s" }, "<C-L>", function()
-	ls.jump(1)
+	luasnip.jump(1)
 end, { silent = true })
 vim.keymap.set({ "i", "s" }, "<C-J>", function()
-	ls.jump(-1)
+	luasnip.jump(-1)
 end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<C-E>", function()
-	if ls.choice_active() then
-		ls.change_choice(1)
+	if luasnip.choice_active() then
+		luasnip.change_choice(1)
 	end
 end, { silent = true })
 
+-- Treesitter
 require("nvim-treesitter.configs").setup({
 	modules = {},
 	sync_install = false,
@@ -83,8 +99,7 @@ require("nvim-treesitter.configs").setup({
 	},
 })
 
--- Lua language server configuration
-
+-- Remaining configuration
 vim.diagnostic.config({
 	virtual_text = true,
 	-- other configurations like signs, underline, etc.
@@ -100,6 +115,16 @@ vim.cmd("highlight ColorColumn guibg=#333333 ctermbg=darkgrey")
 
 vim.cmd("packadd termdebug")
 
+local map = vim.api.nvim_set_keymap
+
+map("n", "<F2>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle NvimTree" })
+map("n", "<F3>", ":Telescope mru_files<CR>", { noremap = true, silent = true, desc = "Toggle MRU" })
+map("n", "<F4>", ":FzfLua files<CR>", { noremap = true, silent = true, desc = "Toggle FzF" })
+-- map("n", "<F5>", ":Termdebug<CR>", { noremap = true, silent = true, desc = "Opens up GDB" })
+
+vim.opt.omnifunc = "ale#compeltion#OmniFunc"
+
+-- Functions
 local function file_exists(filename)
 	local file = io.open(filename, "r") -- Attempt to open the file in read mode
 	if file then
@@ -111,23 +136,6 @@ local function file_exists(filename)
 		return false
 	end
 end
-
-local map = vim.api.nvim_set_keymap
-
-map("n", "<F2>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle NvimTree" })
-map("n", "<F3>", ":Telescope mru_files<CR>", { noremap = true, silent = true, desc = "Toggle MRU" })
-map("n", "<F4>", ":FzfLua files<CR>", { noremap = true, silent = true, desc = "Toggle FzF" })
-map("n", "<F5>", ":Termdebug<CR>", { noremap = true, silent = true, desc = "Opens up GDB" })
-
-vim.opt.omnifunc = "ale#compeltion#OmniFunc"
-
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-	callback = function(ev)
-		vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
-		vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
-	end,
-})
 
 function CScopeAdd()
 	local cscope_file = vim.fn.getcwd() .. "/" .. "cscope.out"
@@ -162,18 +170,4 @@ function CTagsGenerate()
 	local ctags_pid = vim.fn.jobstart(ctags_cmd)
 	vim.fn.jobwait({ ctags_pid })
 	print("Done with " .. ctags_cmd)
-end
-
-function HelpLsp()
-	print('"grn" is mapped in Normal mode to vim.lsp.buf.rename()')
-	print('"gra" is mapped in Normal and Visual mode to vim.lsp.buf.code_action()')
-	print('"grr" is mapped in Normal mode to vim.lsp.buf.references()')
-	print('"gri" is mapped in Normal mode to vim.lsp.buf.implementation()')
-	print('"grt" is mapped in Normal mode to vim.lsp.buf.type_definition()')
-	print('"gO" is mapped in Normal mode to vim.lsp.buf.document_symbol()')
-	print("CTRL-S is mapped in Insert mode to vim.lsp.buf.signature_help()")
-	print(
-		'"an" and "in" are mapped in Visual mode to outer and inner incremental selections, '
-			.. "respectively, using vim.lsp.buf.selection_range()"
-	)
 end
