@@ -21,3 +21,4 @@ follow the instructions in the url above.
 export PATH="${PATH}:${HOME}/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin"
 export PATH="${PATH}:${HOME}/.local/bin"
 ```
+3) For Linux distributions install `clangdb`
