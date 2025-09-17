@@ -115,6 +115,8 @@ vim.cmd("highlight ColorColumn guibg=lightblue ctermbg=lightcyan")
 
 vim.cmd("packadd termdebug")
 
+vim.cmd.colorscheme("moonfly")
+
 local map = vim.api.nvim_set_keymap
 
 map("n", "<F2>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = "Toggle NvimTree" })

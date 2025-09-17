@@ -1,18 +1,20 @@
 return {
-	-- the colorscheme should be available when starting Neovim
 	{
-		"folke/tokyonight.nvim",
-		lazy = false, -- make sure we load this during startup if it is your main colorscheme
-		priority = 1000, -- make sure to load this before all the other start plugins
+		"bluz71/vim-moonfly-colors",
+		name = "moonfly", -- Optional: assign a name for easier reference
+		lazy = false, -- Colorschemes are typically not lazy-loaded for immediate application
+		priority = 1000, -- Ensure it loads before other plugins that might rely on highlights
 		config = function()
-			-- load the colorscheme here
-			vim.cmd([[colorscheme tokyonight-day]])
+			-- Optional: Set any Moonfly-specific options here if needed
+			-- For example, to enable thin window separators:
+			-- vim.g.moonflyWinSeparator = 2
 		end,
 	},
 
-	-- I have a separate config.mappings file where I require which-key.
-	-- With lazy the plugin will be automatically loaded when it is required somewhere
-	{ "folke/which-key.nvim", lazy = true },
+	{
+		"folke/which-key.nvim",
+		lazy = true,
+	},
 
 	{
 		"nvim-neorg/neorg",
@@ -59,5 +61,5 @@ return {
 		keys = { "<C-a>", { "<C-x>", mode = "n" } },
 	},
 
-  { "folke/noice.nvim" }
+	{ "folke/noice.nvim" },
 }
