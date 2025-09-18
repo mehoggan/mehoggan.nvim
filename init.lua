@@ -1,6 +1,6 @@
 vim.cmd("syntax on")
 
-vim.g.mapleader = '<Space>'
+vim.g.mapleader = "<Space>"
 
 -- Lazy
 require("config.lazy")
@@ -18,7 +18,7 @@ require("telescope").load_extension("mru_files")
 require("cscope_maps").setup()
 
 -- LspConfig
-require("lspconfig").clangd.setup({
+vim.lsp.config('clangd', {
 	init_options = {
 		compilationDatabasePath = "./build", -- or the correct path
 	},
@@ -31,7 +31,7 @@ require("lspconfig").clangd.setup({
 	root_dir = require("lspconfig.util").root_pattern("build", ".git"),
 })
 
-require("lspconfig").lua_ls.setup({
+vim.lsp.config['luals'] = {
 	cmd = { "lua-language-server" },
 	filetypes = { "lua" },
 	root_dir = require("lspconfig").util.root_pattern(
@@ -52,7 +52,7 @@ require("lspconfig").lua_ls.setup({
 			},
 		},
 	},
-})
+}
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
