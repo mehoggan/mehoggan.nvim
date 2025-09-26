@@ -123,6 +123,7 @@ map("n", "<F2>", ":NvimTreeToggle<CR>", { noremap = true, silent = true, desc = 
 map("n", "<F3>", ":Telescope mru_files<CR>", { noremap = true, silent = true, desc = "Toggle MRU" })
 map("n", "<F4>", ":FzfLua files<CR>", { noremap = true, silent = true, desc = "Toggle FzF" })
 -- map("n", "<F5>", ":Termdebug<CR>", { noremap = true, silent = true, desc = "Opens up GDB" })
+map("n", "<F8>", ":TagbarToggle<CR>", { noremap = true, silent = true })
 
 vim.opt.omnifunc = "ale#compeltion#OmniFunc"
 

@@ -10,6 +10,9 @@ return {
 		local dap = require("dap")
 		local dapui = require("dapui")
 		local mason_dap = require("mason-nvim-dap")
+		local mason = require("mason")
+
+		mason.setup()
 
 		dapui.setup()
 
@@ -60,10 +63,12 @@ return {
 		vim.keymap.set("n", "<leader>dk", dap.close, { desc = "Kill Session" })
 		vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "Toggle DAP UI" })
 		vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "DAP Toggle Breakpoint" })
-    vim.keymap.set('n', '<leader>dB', function()
-      local condition = vim.fn.input("Breakpoint condition: ")
-      require('dap').set_breakpoint(condition)
-    end, { desc = "Set Conditional Breakpoint" })
+		vim.keymap.set("n", "<leader>dU", dap.up, { desc = "Debug: DAP Stack UP" })
+		vim.keymap.set("n", "<leader>dD", dap.down, { desc = "Debug: DAP Stack DOWN" })
+		vim.keymap.set("n", "<leader>dB", function()
+			local condition = vim.fn.input("Breakpoint condition: ")
+			require("dap").set_breakpoint(condition)
+		end, { desc = "Set Conditional Breakpoint" })
 		--[[
 require('dap').step_back(): Steps back to the previous line of code (if supported by the debugger).
 require('dap').reverse_continue(): Continues execution backward (if supported by the debugger).
