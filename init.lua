@@ -18,47 +18,23 @@ require("telescope").load_extension("mru_files")
 require("cscope_maps").setup()
 
 -- LspConfig
-vim.lsp.config('clangd', {
-	init_options = {
-		compilationDatabasePath = "./build", -- or the correct path
-	},
-	cmd = {
-		"clangd",
-		"--background-index",
-		"--suggest-missing-includes",
-		"--compile-commands-dir=./build", -- Replace with your actual path
-	},
-	root_dir = require("lspconfig.util").root_pattern("build", ".git"),
-})
-
-vim.lsp.config['luals'] = {
-	cmd = { "lua-language-server" },
-	filetypes = { "lua" },
-	root_dir = require("lspconfig").util.root_pattern(
-		"~/.local/share/nvim/lazy/nvim-lspconfig/.luarc.json",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/.luarc.jsonc",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/.luacheckrc",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/.stylua.toml",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/stylua.toml",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/selene.toml",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/selene.yml",
-		"~/.local/share/nvim/lazy/nvim-lspconfig/.git"
-	),
-	single_file_support = true,
-	settings = {
-		Lua = {
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true), -- Include Neovim's runtime files
-			},
-		},
-	},
-}
+vim.lsp.enable({ "pylsp" })
+vim.lsp.enable({ "pyright" })
+vim.lsp.enable({ "luals" })
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 	callback = function(ev)
-		vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
-		vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
+		local bufnr = ev.buf
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+		if client.name == "pyright" then
+			vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
+			vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
+		else
+			vim.keymap.set("n", "grd", vim.lsp.buf.definition, { buffer = ev.buf })
+			vim.keymap.set("n", "grD", vim.lsp.buf.declaration, { buffer = ev.buf })
+		end
 	end,
 })
 

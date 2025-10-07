@@ -17,8 +17,14 @@ follow the instructions in the url above.
 
 1) Install cpptools in nvim `:MasonInstall cpptools`
 2) Set environment variables for dsp-nvim (gdb like debugging)
-```
+```sh
 export PATH="${PATH}:${HOME}/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin"
 export PATH="${PATH}:${HOME}/.local/bin"
 ```
 3) For Linux distributions install `clangdb`
+4) For python debugging do something to the effect:
+```sh
+python3 -m venv ~/.venv/myvenv
+source ~/.venv/myvenv/bin/activate
+pip install debugpy bytecode python-lsp-server[all]
+```

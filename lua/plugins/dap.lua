@@ -1,10 +1,14 @@
 return {
 	"mfussenegger/nvim-dap",
 	dependencies = {
+		"jay-babu/mason-nvim-dap.nvim",
 		"rcarriga/nvim-dap-ui",
 		"theHamsta/nvim-dap-virtual-text",
 		"williamboman/mason.nvim",
-		"jay-babu/mason-nvim-dap.nvim",
+		"mfussenegger/nvim-dap-python",
+		"nvim-dap-ui",
+		"nvim-dap-virtual-text",
+		"nvim-telescope/telescope-dap.nvim",
 	},
 	config = function()
 		local dap = require("dap")
@@ -16,10 +20,19 @@ return {
 
 		dapui.setup()
 
+		vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
+		vim.fn.sign_define("DapStopped", { text = "🚏", texthl = "", linehl = "", numhl = "" })
+
 		dap.adapters.cppdbg = {
 			id = "cppdbg",
 			type = "executable",
 			command = "~/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+		}
+
+		dap.adapters.python = {
+			command = "python",
+			type = "executable",
+			args = { "-m", "debugpy.adapter" },
 		}
 
 		mason_dap.setup({
@@ -69,7 +82,25 @@ return {
 			local condition = vim.fn.input("Breakpoint condition: ")
 			require("dap").set_breakpoint(condition)
 		end, { desc = "Set Conditional Breakpoint" })
-		--[[
+
+		local dap_python = require("dap-python")
+		dap_python.setup("/usr/bin/python3")
+		dap_python.test_runner = "pytest"
+		dap_python.default_port = 38000
+
+		dap.listeners.after.event_initialized["dapui_config"] = function()
+			require("dapui").open()
+		end
+		dap.listeners.before.event_terminated["dapui_config"] = function()
+			require("dapui").close()
+		end
+		dap.listeners.before.event_exited["dapui_config"] = function()
+			require("dapui").close()
+		end
+	end,
+}
+
+--[[
 require('dap').step_back(): Steps back to the previous line of code (if supported by the debugger).
 require('dap').reverse_continue(): Continues execution backward (if supported by the debugger).
 require('dap').toggle_breakpoint(): Toggles a breakpoint on the current line.
@@ -93,5 +124,3 @@ require('dap.ui.widgets').watches(): Opens a floating window to manage watch exp
 require('dap.ui.widgets').breakpoints(): Opens a floating window to manage breakpoints.
 require('dap.ui.widgets').stack_frames(): Opens a floating window to navigate the call stack.
 --]]
-	end,
-}
