@@ -23,11 +23,28 @@ return {
 		vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
 		vim.fn.sign_define("DapStopped", { text = "🚏", texthl = "", linehl = "", numhl = "" })
 
+    --[[
 		dap.adapters.cppdbg = {
 			id = "cppdbg",
 			type = "executable",
 			command = "~/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
 		}
+    ]]
+
+    --[[
+    dap.adapters.lldb = {
+      id = "lldb",
+      type = "executable",
+      command = "lldb-dap",
+    }
+    ]]
+
+    dap.adapters.codelldb = {
+      type = "server",
+      executable = {
+        command = "~/.local/share/nvim/mason/bin/codelldb",
+      }
+    }
 
 		dap.adapters.python = {
 			command = "python",
@@ -49,7 +66,7 @@ return {
 		dap.configurations.cpp = {
 			{
 				name = "launch",
-				type = "cppdbg",
+				type = "codelldb", -- Change to cppdbg for gdb
 				request = "launch",
 				program = function()
 					return vim.fn.input("Executable path to debug: ", vim.fn.getcwd() .. "/", "file")
