@@ -62,6 +62,8 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
 	end
 end, { silent = true })
 
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep)
+
 -- Treesitter
 require("nvim-treesitter.configs").setup({
 	modules = {},
