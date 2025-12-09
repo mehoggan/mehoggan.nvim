@@ -86,7 +86,7 @@ vim.opt.shiftwidth = 2 -- Number of spaces for each indent level
 vim.opt.tabstop = 2 -- Number of spaces a tab character represents
 vim.opt.softtabstop = 2 -- Number of spaces a <Tab> counts for when inserting
 
-vim.opt.colorcolumn = "80,100"
+vim.opt.colorcolumn = "80"
 vim.cmd("highlight ColorColumn guibg=lightblue ctermbg=lightcyan")
 
 vim.cmd("packadd termdebug")

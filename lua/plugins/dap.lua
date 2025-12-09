@@ -23,13 +23,16 @@ return {
 		vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
 		vim.fn.sign_define("DapStopped", { text = "🚏", texthl = "", linehl = "", numhl = "" })
 
-    --[[
+    dap.set_log_level(vim.log.levels.DEBUG)
+
 		dap.adapters.cppdbg = {
 			id = "cppdbg",
 			type = "executable",
 			command = "~/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+      env = {
+        LD_LIBRARY_PATH = "./build/lib/.libs" .. ":" .. (os.getenv("LD_LIBRARY_PATH") or "")
+      }
 		}
-    ]]
 
     --[[
     dap.adapters.lldb = {
