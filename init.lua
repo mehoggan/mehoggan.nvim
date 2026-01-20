@@ -2,6 +2,8 @@ vim.cmd("syntax on")
 
 vim.g.mapleader = "<Space>"
 
+vim.wo.number = true
+
 -- Lazy
 require("config.lazy")
 
