@@ -23,11 +23,11 @@ require("cscope_maps").setup()
 local fidget = require("fidget")
 
 vim.keymap.set("n", "A", function()
-  fidget.notify("This is from fidget.notify().")
+	fidget.notify("This is from fidget.notify().")
 end)
 
 vim.keymap.set("n", "B", function()
-  fidget.notify("This is also from fidget.notify().", vim.log.levels.WARN)
+	fidget.notify("This is also from fidget.notify().", vim.log.levels.WARN)
 end)
 
 -- LspConfig
@@ -74,6 +74,15 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
 		luasnip.change_choice(1)
 	end
 end, { silent = true })
+
+-- Nvim-tree
+require("nvim-tree").setup({
+	actions = {
+		open_file = {
+			resize_window = true, -- Ensures the window resizes correctly
+		},
+	},
+})
 
 -- Treesitter
 require("nvim-treesitter.configs").setup({
@@ -134,7 +143,7 @@ function CScopeAdd()
 	if file_exists(cscope_file) then
 		print("Adding " .. cscope_file .. "...")
 		vim.cmd(":Cs db add")
-    print("Done with adding cscope!")
+		print("Done with adding cscope!")
 	end
 end
 
