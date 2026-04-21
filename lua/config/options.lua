@@ -3,3 +3,4 @@
 -- Add any additional options here
 vim.opt.relativenumber = false
 vim.opt.colorcolumn = "80,100"
+vim.opt.clipboard = "unnamedplus"
