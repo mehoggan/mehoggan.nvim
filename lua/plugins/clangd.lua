@@ -11,6 +11,7 @@ return {
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=never",
+            "--query-driver=/usr/include/c++/13/",
           },
         },
       },
