@@ -10,7 +10,10 @@ return {
     },
     build = "make tiktoken",
     opts = {
-      -- See Configuration section for options
+      server_opts_overrides = {
+        type = "binary",
+      },
+      copilot_node_command = vim.fn.expand("$HOME") .. "/.nvm/versions/node/v22.22.3/bin/node",
     },
     keys = {
       { "<leader>zc", ":CopilotChat<CR>", mode = "n", desc = "Chat with Copilot" },
