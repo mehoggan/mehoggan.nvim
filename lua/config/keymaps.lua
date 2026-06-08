@@ -7,3 +7,9 @@ end, { desc = "Terminal (Vertical Right)" })
 vim.keymap.set({ "n", "t" }, "<leader>tb", function()
   Snacks.terminal.open(nil, { win = { position = "bottom" } })
 end, { desc = "Terminal (Horizontal Bottom)" })
+vim.keymap.set(
+  { "n", "t" },
+  "<leader>ch",
+  "<cmd>LspClangdSwitchSourceHeader<cr>",
+  { desc = "Switch between source/header" }
+)
