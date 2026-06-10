@@ -13,3 +13,6 @@ vim.keymap.set(
   "<cmd>LspClangdSwitchSourceHeader<cr>",
   { desc = "Switch between source/header" }
 )
+vim.keymap.set("n", "[w", function()
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
+end)
