@@ -16,3 +16,9 @@ vim.keymap.set(
 vim.keymap.set("n", "[w", function()
   vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN })
 end)
+vim.keymap.set(
+  { "n", "t" },
+  "<leader>sb",
+  ':bufdo if &buftype == "terminal" | call jobsend(b:terminal_job_id, "source ~/.bashrc\\n") | endif<CR>',
+  { noremap = true, desc = "Source bashrc for all open teremial buffers." }
+)
