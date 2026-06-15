@@ -6,3 +6,4 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.colorcolumn = "80,100" -- Where to draw the color column
 vim.opt.ignorecase = false -- Do not ignore case when searching
 vim.opt.smartcase = false -- Do not override ignorecase if uppercase is used
+vim.lsp.inlay_hint.enable(false) -- Disable inline hints for parameters
