@@ -22,3 +22,4 @@ vim.keymap.set(
   ':bufdo if &buftype == "terminal" | call jobsend(b:terminal_job_id, "source ~/.bashrc\\n") | endif<CR>',
   { noremap = true, desc = "Source bashrc for all open teremial buffers." }
 )
+vim.keymap.set("n", "<leader>uw", "<cmd>set list!<cr>", { desc = "Toggle Whitespace Visibility" })
