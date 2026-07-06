@@ -20,14 +20,32 @@ return {
           settings = {
             yaml = {
               validate = true,
-              schemaStore = {
-                enable = true,
-                url = "https://www.schemastore.org/api/json/catalog.json",
+              -- Extend schemas to recognize Zuul configuration files
+              schemas = {
+                ["https://schemastore.org"] = {
+                  "**/zuul.d/*.yaml",
+                  ".zuul.yaml",
+                  "**/zuul.yaml",
+                },
               },
-              hover = true,
-              completion = true,
+              -- Map custom tags if your Zuul setup relies on them
+              customTags = {
+                "!encrypted scalar",
+              },
             },
           },
+          -- Dynamically resolve the root directory to your config-project path
+          root_dir = function()
+            local target_dir = "/grmn/zuul"
+
+            -- Check if the conventional directory exists and is accessible
+            if vim.fn.isdirectory(target_dir) == 1 then
+              return target_dir
+            else
+              -- Fallback to the user home directory if missing
+              return vim.fn.expand("$HOME")
+            end
+          end,
         },
       },
     },
