@@ -8,6 +8,8 @@ return {
           cmd = {
             "clangd",
             "--background-index",
+            "-j",
+            math.floor(vim.uv.available_parallelism() / 2),
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=never",
