@@ -13,7 +13,7 @@ return {
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=never",
-            "--query-driver=/usr/include/c++/13",
+            "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/bin/clang++,/usr/bin/clang",
             "--enable-config",
           },
         },
