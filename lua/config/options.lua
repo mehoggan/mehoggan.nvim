@@ -18,3 +18,5 @@ vim.opt.listchars = { -- Customize how each whitespace character looks
   extends = "»",
   precedes = "«",
 }
+
+vim.opt.shell = "/bin/bash"
