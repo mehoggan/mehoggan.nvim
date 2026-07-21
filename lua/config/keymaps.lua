@@ -23,3 +23,4 @@ vim.keymap.set(
   { noremap = true, desc = "Source bashrc for all open teremial buffers." }
 )
 vim.keymap.set("n", "<leader>uw", "<cmd>set list!<cr>", { desc = "Toggle Whitespace Visibility" })
+vim.keymap.set("n", "<leader>gq", "<cmd>DiffviewClose<cr>", { desc = "Close Diffview" })
