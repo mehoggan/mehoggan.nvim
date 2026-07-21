@@ -4,42 +4,17 @@ return {
   opts = {
     git_cmd = "git",
     symbols = {
-      merge_commit = "",
-      commit = "",
-      merge_commit_end = "",
-      commit_end = "",
-      -- branch crossing glyphs (Nerd Font)
-      GVER = "",
-      GHOR = "",
-      GCLD = "",
-      GCRD = "╭",
-      GCLU = "",
-      GCRU = "╯",
-      GLRU = "",
-      GLRD = "",
-      GLUD = "",
-      GRUD = "",
-      GFORKU = "",
-      GFORKD = "",
-      GRUDCD = "",
-      GRUDCU = "",
-      GLUDCD = "",
-      GLUDCU = "",
-      GLRDCL = "",
-      GLRDCR = "",
-      GLRUCL = "",
-      GLRUCR = "",
+      merge_commit = "◯",
+      commit = "●",
     },
     format = {
       timestamp = "%H:%M:%S %d-%m-%Y",
       fields = { "hash", "timestamp", "author", "branch_name", "tag" },
     },
     hooks = {
-      -- Enter on a commit → open its diff in Diffview
       on_select_commit = function(commit)
         vim.cmd(":DiffviewOpen " .. commit.hash .. "^!")
       end,
-      -- Visual-select a range → diff across it
       on_select_range_commit = function(from, to)
         vim.cmd(":DiffviewOpen " .. from.hash .. "~1.." .. to.hash)
       end,
@@ -47,7 +22,7 @@ return {
   },
   keys = {
     {
-      "<leader>gl",
+      "<leader>gL",
       function()
         require("gitgraph").draw({}, { all = true, max_count = 5000 })
       end,
