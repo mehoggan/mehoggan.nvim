@@ -20,3 +20,4 @@ vim.opt.listchars = { -- Customize how each whitespace character looks
 }
 
 vim.opt.shell = "/bin/bash"
+vim.opt.termguicolors = true
