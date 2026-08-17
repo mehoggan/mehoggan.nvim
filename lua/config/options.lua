@@ -21,3 +21,13 @@ vim.opt.listchars = { -- Customize how each whitespace character looks
 
 vim.opt.shell = "/bin/bash"
 vim.opt.termguicolors = true
+
+if vim.fn.has("win32") == 1 then
+  vim.opt.shell = "powershell.exe"
+  vim.opt.shellcmdflag =
+    "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+  vim.opt.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; stop"
+  vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; stop"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+end
