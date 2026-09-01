@@ -36,17 +36,24 @@ return {
               desc = "Class: derived classes",
             },
           },
-          cmd = {
-            "clangd",
-            "--background-index",
-            "-j",
-            math.floor(vim.uv.available_parallelism() / 2),
-            "--clang-tidy",
-            "--completion-style=detailed",
-            "--header-insertion=never",
-            query_drivers(),
-            "--enable-config",
-          },
+          cmd = (function()
+            local cmd = {
+              "clangd",
+              "--background-index",
+              ("-j=%d"):format(
+                math.max(1, math.floor(vim.uv.available_parallelism() / 2))
+              ),
+              "--clang-tidy",
+              "--completion-style=detailed",
+              "--header-insertion=never",
+              "--enable-config",
+            }
+            local qd = query_drivers()
+            if qd and qd ~= "" then
+              table.insert(cmd, qd)
+            end
+            return cmd
+          end)(),
         },
         -- YAML language server
         yamlls = {
