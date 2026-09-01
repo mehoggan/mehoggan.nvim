@@ -5,6 +5,22 @@ return {
       servers = {
         clangd = {
           mason = false,
+          keys = {
+            {
+              "<leader>chs",
+              function()
+                vim.lsp.buf.typehierarchy("supertypes")
+              end,
+              desc = "Class: base classes",
+            },
+            {
+              "<leader>chS",
+              function()
+                vim.lsp.buf.typehierarchy("subtypes")
+              end,
+              desc = "Class: derived classes",
+            },
+          },
           cmd = {
             "clangd",
             "--background-index",
