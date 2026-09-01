@@ -1,3 +1,18 @@
+-- Per-project query-drivers, added only when that tree is present on this machine.
+-- The key is the dir to test; the value is the clangd --query-driver glob to enable.
+local function query_drivers()
+  local drivers = { "/usr/bin/*" } -- host toolchains, always allowed
+  local per_project = {
+    ["/grmn/prj/hydra"] = "/grmn/prj/hydra/_Output/archive/extract/yocto-sdk/**/aarch64-poky-linux-*",
+  }
+  for dir, glob in pairs(per_project) do
+    if vim.fn.isdirectory(dir) == 1 then
+      table.insert(drivers, glob)
+    end
+  end
+  return "--query-driver=" .. table.concat(drivers, ",")
+end
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -29,7 +44,7 @@ return {
             "--clang-tidy",
             "--completion-style=detailed",
             "--header-insertion=never",
-            "--query-driver=/usr/bin/g++,/usr/bin/gcc,/usr/bin/clang++,/usr/bin/clang",
+            query_drivers(),
             "--enable-config",
           },
         },
