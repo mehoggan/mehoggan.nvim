@@ -1,17 +1,14 @@
 return {
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    version = "v2.0.0", -- Explicitly pins the plugin version (last release before the `pumborder` check, which this nvim build's 0.12-dev doesn't yet support)
-    priority = 1000,
+    "LazyVim/LazyVim",
     opts = {
-      transparent_background = true,
+      colorscheme = "jungle",
     },
     init = function()
       vim.api.nvim_create_autocmd("ColorScheme", {
-        pattern = "*",
+        pattern = "jungle",
         callback = function()
-          local hl_groups = {
+          for _, group in ipairs({
             "Normal",
             "NormalNC",
             "NormalFloat",
@@ -20,24 +17,15 @@ return {
             "SignColumn",
             "StatusLine",
             "MsgArea",
-            "EndOffLine",
+            "EndOfBuffer",
+            "LazyNormal",
             "NeoTreeNormal",
             "NeoTreeNormalNC",
-            "LazyNormal",
-            "DashboardHeader",
-            "DashboardFooter",
-          }
-          for _, group in ipairs(hl_groups) do
+          }) do
             vim.api.nvim_set_hl(0, group, { bg = "none", ctermbg = "none" })
           end
         end,
       })
     end,
-  },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "catppuccin",
-    },
   },
 }
