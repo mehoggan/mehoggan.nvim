@@ -20,22 +20,6 @@ return {
       servers = {
         clangd = {
           mason = false,
-          keys = {
-            {
-              "<leader>chs",
-              function()
-                vim.lsp.buf.typehierarchy("supertypes")
-              end,
-              desc = "Class: base classes",
-            },
-            {
-              "<leader>chS",
-              function()
-                vim.lsp.buf.typehierarchy("subtypes")
-              end,
-              desc = "Class: derived classes",
-            },
-          },
           cmd = (function()
             local cmd = {
               "clangd",
@@ -45,8 +29,11 @@ return {
               ),
               "--clang-tidy",
               "--completion-style=detailed",
+              "--background-index-priority=normal",
+              "--pch-storage=memory",
               "--header-insertion=never",
               "--enable-config",
+              "--compile-commands-dir=/grmn/prj/hydra/_Output/wildcat",
             }
             local qd = query_drivers()
             if qd and qd ~= "" then
