@@ -226,6 +226,15 @@ local hl = {
   GitSignsChange = { fg = c.yellow },
   GitSignsDelete = { fg = c.red },
 
+  -- Snacks --
+  SnacksPickerGitStatusUntracked = { fg = c.bgreen }, -- #7dff5a
+  SnacksPickerGitStatusModified = { fg = c.byellow }, -- #ffe066
+  SnacksPickerGitStatusAdded = { fg = c.green },
+  SnacksPickerGitStatusStaged = { fg = c.green },
+  SnacksPickerGitStatusDeleted = { fg = c.red },
+  SnacksPickerGitStatusRenamed = { fg = c.bblue },
+  SnacksPickerGitStatusIgnored = { fg = c.gutter }, -- dim is fine here
+
   -- Spell
   SpellBad = { undercurl = true, sp = c.red },
   SpellCap = { undercurl = true, sp = c.yellow },
