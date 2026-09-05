@@ -1,6 +1,7 @@
 return {
-  "selimacerbas/markdown-preview.nvim",
-  dependencies = { "selimacerbas/live-server.nvim" },
+  "iamcco/markdown-preview.nvim",
+  cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+  build = "cd app && npm install",
   config = function()
     require("markdown_preview").setup({
       -- all optional; sane defaults shown
