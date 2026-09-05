@@ -21,6 +21,7 @@ vim.opt.listchars = { -- Customize how each whitespace character looks
 
 vim.opt.shell = "/bin/bash"
 vim.opt.termguicolors = true
+vim.g.jungle_transparent = true
 
 if vim.fn.has("win32") == 1 then
   vim.opt.shell = "powershell.exe"

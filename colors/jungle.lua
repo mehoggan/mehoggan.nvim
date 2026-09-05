@@ -33,6 +33,7 @@ local c = {
   bmagenta = "#e0a6ff",
   cyan = "#25e0b8",
   bcyan = "#5cffdc",
+  type = "#8ff0e4", -- icy cyan for types (separates from the green field)
   white = "#f4fff4",
   cursor = "#8dff5a",
 }
@@ -111,10 +112,10 @@ local hl = {
   Define = { fg = c.cyan },
   Macro = { fg = c.cyan },
   PreCondit = { fg = c.cyan },
-  Type = { fg = c.cyan },
+  Type = { fg = c.type },
   StorageClass = { fg = c.cyan },
   Structure = { fg = c.cyan },
-  Typedef = { fg = c.cyan },
+  Typedef = { fg = c.type },
   Special = { fg = c.bgreen },
   SpecialChar = { fg = c.bgreen },
   Tag = { fg = c.bblue },
@@ -143,9 +144,9 @@ local hl = {
   ["@boolean"] = { fg = c.yellow },
   ["@number"] = { fg = c.byellow },
   ["@number.float"] = { fg = c.byellow },
-  ["@type"] = { fg = c.cyan },
-  ["@type.builtin"] = { fg = c.cyan, italic = true },
-  ["@type.definition"] = { fg = c.cyan },
+  ["@type"] = { fg = c.type },
+  ["@type.builtin"] = { fg = c.type, italic = true },
+  ["@type.definition"] = { fg = c.type },
   ["@attribute"] = { fg = c.cyan },
   ["@property"] = { fg = c.bcyan },
   ["@function"] = { fg = c.bblue },
@@ -226,14 +227,16 @@ local hl = {
   GitSignsChange = { fg = c.yellow },
   GitSignsDelete = { fg = c.red },
 
-  -- Snacks --
-  SnacksPickerGitStatusUntracked = { fg = c.bgreen }, -- #7dff5a
-  SnacksPickerGitStatusModified = { fg = c.byellow }, -- #ffe066
+  -- Snacks explorer / picker git status (bright enough to clear the green field)
+  -- If names differ on your Snacks version, list them with:
+  --   :lua for _,g in ipairs(vim.fn.getcompletion("SnacksPickerGitStatus","highlight")) do print(g) end
+  SnacksPickerGitStatusUntracked = { fg = c.bgreen },
+  SnacksPickerGitStatusModified = { fg = c.byellow },
   SnacksPickerGitStatusAdded = { fg = c.green },
   SnacksPickerGitStatusStaged = { fg = c.green },
   SnacksPickerGitStatusDeleted = { fg = c.red },
   SnacksPickerGitStatusRenamed = { fg = c.bblue },
-  SnacksPickerGitStatusIgnored = { fg = c.gutter }, -- dim is fine here
+  SnacksPickerGitStatusIgnored = { fg = c.gutter },
 
   -- Spell
   SpellBad = { undercurl = true, sp = c.red },
