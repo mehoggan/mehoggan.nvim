@@ -81,3 +81,27 @@ vim.keymap.set(
   vim.lsp.buf.declaration,
   { desc = "LSP: Declaration" }
 )
+
+local function goto_related()
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local diags = vim.diagnostic.get(0, { lnum = pos[1] - 1 })
+  for _, d in ipairs(diags) do
+    local lsp = d.user_data and d.user_data.lsp
+    local related = lsp and lsp.relatedInformation
+    if related and related[1] then
+      local client = vim.lsp.get_clients({ bufnr = 0 })[1]
+      local enc = client and client.offset_encoding or "utf-16"
+      -- show_document replaces the deprecated jump_to_location
+      vim.lsp.util.show_document(related[1].location, enc, { focus = true })
+      return
+    end
+  end
+  vim.notify("No related information here", vim.log.levels.WARN)
+end
+
+vim.keymap.set(
+  "n",
+  "<leader>cj",
+  goto_related,
+  { desc = "Jump to diagnostic source" }
+)
