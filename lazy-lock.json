@@ -1,4 +1,5 @@
 {
+  "ClassDossier.nvim": { "branch": "main", "commit": "20465e11b3fab21d0eaf1bc1a7fb36857819db08" },
   "CopilotChat.nvim": { "branch": "main", "commit": "004ced055d8db59561cfcddc5f141ccd8d5a033b" },
   "LazyVim": { "branch": "main", "commit": "999700997f72227187d49d8b92667183dc7fc809" },
   "blink.cmp": { "branch": "main", "commit": "78336bc89ee5365633bcf754d93df01678b5c08f" },
@@ -38,7 +39,7 @@
   "nvim-ts-autotag": { "branch": "main", "commit": "88c1453db4ba7dd24131086fe51fdf74e587d275" },
   "persistence.nvim": { "branch": "main", "commit": "b20b2a7887bd39c1a356980b45e03250f3dce49c" },
   "plenary.nvim": { "branch": "master", "commit": "74b06c6c75e4eeb3108ec01852001636d85a932b" },
-  "pnd-log": { "branch": "main", "commit": "a3bf7e5efa28dc80079a1274582a08bd71dc0af5" },
+  "pnd-log": { "branch": "main", "commit": "3045b32a021202d8d494f3e7ee00d2284eaf62ad" },
   "pomo.nvim": { "branch": "main", "commit": "7e06e5221d8d1e596a0ab29dd4d7fcee5f3cd05a" },
   "snacks.nvim": { "branch": "main", "commit": "882c996cf28183f4d63640de0b4c02ec886d01f2" },
   "telescope-hierarchy.nvim": { "branch": "feature/types", "commit": "34a3716cd50ea2160e7ed550b9a7743ec57e66e9" },
