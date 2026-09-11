@@ -1,14 +1,33 @@
--- Per-project query-drivers, added only when that tree is present on this machine.
--- The key is the dir to test; the value is the clangd --query-driver glob to enable.
-local function query_drivers()
-  local drivers = { "/usr/bin/*" } -- host toolchains, always allowed
-  local per_project = {
-    ["/grmn/prj/hydra"] = "/grmn/prj/hydra/_Output/archive/extract/yocto-sdk/**/aarch64-poky-linux-*",
-  }
-  for dir, glob in pairs(per_project) do
-    if vim.fn.isdirectory(dir) == 1 then
-      table.insert(drivers, glob)
+-- Per-project overrides, applied only when that tree is present on this
+-- machine. Each entry lists every path the project root is known to live
+-- at across machines (Linux boxes, this Windows box, etc.) so the same
+-- dotfiles repo works everywhere without hardcoding one OS's path.
+local project_overrides = {
+  {
+    roots = { "/grmn/prj/hydra", "C:/grmn/prj/hydra" },
+    compile_commands_dir = "%s/_Output/wildcat",
+    query_driver = "%s/_Output/archive/extract/yocto-sdk/**/aarch64-poky-linux-*",
+  },
+}
+
+local function find_project_override()
+  for _, o in ipairs(project_overrides) do
+    for _, root in ipairs(o.roots) do
+      if vim.fn.isdirectory(root) == 1 then
+        return {
+          compile_commands_dir = o.compile_commands_dir:format(root),
+          query_driver = o.query_driver:format(root),
+        }
+      end
     end
+  end
+  return nil
+end
+
+local function query_drivers(override)
+  local drivers = { "/usr/bin/*" } -- host toolchains, always allowed
+  if override then
+    table.insert(drivers, override.query_driver)
   end
   return "--query-driver=" .. table.concat(drivers, ",")
 end
@@ -33,12 +52,15 @@ return {
               "--pch-storage=memory",
               "--header-insertion=never",
               "--enable-config",
-              "--compile-commands-dir=/grmn/prj/hydra/_Output/wildcat",
             }
-            local qd = query_drivers()
-            if qd and qd ~= "" then
-              table.insert(cmd, qd)
+            local override = find_project_override()
+            if override then
+              table.insert(
+                cmd,
+                "--compile-commands-dir=" .. override.compile_commands_dir
+              )
             end
+            table.insert(cmd, query_drivers(override))
             return cmd
           end)(),
         },
