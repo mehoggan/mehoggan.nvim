@@ -29,6 +29,11 @@ vim.api.nvim_create_user_command("LspInfo", function()
     table.insert(lines, ("  root_dir: %s"):format(c.root_dir or "<none>"))
     table.insert(lines, ("  cmd: %s"):format(table.concat(c.config.cmd or {}, " ")))
     table.insert(lines, ("  filetypes: %s"):format(table.concat(c.config.filetypes or {}, ", ")))
+    if c.config.cmd_env then
+      table.insert(lines, ("  cmd_env.PATH: %s"):format(c.config.cmd_env.PATH or "<unset>"))
+    else
+      table.insert(lines, "  cmd_env: <none>")
+    end
   end
   vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO, { title = "LSP Info" })
 end, {})
