@@ -7,3 +7,4 @@ foo.*
 *.log
 data
 **/lua/plugins/pnd-log.lua
+**/lazy-lock.json
