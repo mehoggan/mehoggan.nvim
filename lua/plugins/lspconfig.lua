@@ -1,10 +1,11 @@
 -- Per-project overrides, applied only when that tree is present on this
--- machine. Each entry lists every path the project root is known to live
--- at across machines (Linux boxes, this Windows box, etc.) so the same
--- dotfiles repo works everywhere without hardcoding one OS's path.
+-- machine. `root` is picked by OS rather than probed with isdirectory:
+-- on Windows, a driveless path like "/grmn/prj/hydra" is drive-relative
+-- to whatever drive is current, so it can falsely resolve to
+-- "C:/grmn/prj/hydra" and match even when the Linux path is the wrong one.
 local project_overrides = {
   {
-    roots = { "/grmn/prj/hydra", "C:/grmn/prj/hydra" },
+    root = vim.fn.has("win32") == 1 and "C:/grmn/prj/hydra" or "/grmn/prj/hydra",
     compile_commands_dir = "%s/_Output/wildcat",
     query_driver = "%s/_Output/archive/extract/yocto-sdk/**/aarch64-poky-linux-*",
   },
@@ -12,13 +13,11 @@ local project_overrides = {
 
 local function find_project_override()
   for _, o in ipairs(project_overrides) do
-    for _, root in ipairs(o.roots) do
-      if vim.fn.isdirectory(root) == 1 then
-        return {
-          compile_commands_dir = o.compile_commands_dir:format(root),
-          query_driver = o.query_driver:format(root),
-        }
-      end
+    if vim.fn.isdirectory(o.root) == 1 then
+      return {
+        compile_commands_dir = o.compile_commands_dir:format(o.root),
+        query_driver = o.query_driver:format(o.root),
+      }
     end
   end
   return nil
